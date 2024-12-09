@@ -1,0 +1,8 @@
+asgiref==3.8.1
+dj==0.1
+Django==5.1.4
+django-crispy-forms==2.0
+pytz==2024.2
+sqlparse==0.4.4
+typing_extensions==4.7.1
+tzdata==2024.2
