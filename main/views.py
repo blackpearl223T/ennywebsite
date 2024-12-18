@@ -2,10 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ToDoList, Item
 from .forms import CreateNewList
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(response, id):
-    ls = ToDoList.objects.get(id=id)
+    try:
+
+        ls = ToDoList.objects.get(id=id)
+    except ToDoList.DoesNotExist:
+        return render (response, "main/error.html", {"message": "List not found"})
 
     if response.method == "POST":
         print(response.POST)
@@ -22,7 +27,7 @@ def index(response, id):
             txt = response.POST.get("new")
 
             if len(txt) > 2:
-                ls.item_set.Create(text=txt, complete=False)
+                ls.item_set.create(text=txt, complete=False)
             else:
                 print("invalid input")
 
@@ -30,9 +35,9 @@ def index(response, id):
 
     return render(response, "main/list.html", {"ls":ls})
 
-
+@login_required(login_url='/login')
 def home(response):
-    return render(response, "main/home.html",  {})
+    return render(response, "register/home.html",  {})
 
 def create(response):
     if response.method == "POST":
@@ -41,12 +46,12 @@ def create(response):
             n = form.cleaned_data["name"]
             t = ToDoList(name=n)
             t.save()
-            print("New list created")
+            response.user.todolist.add(t)
         return HttpResponseRedirect("/%i" %t.id)
     else:
         form = CreateNewList()
     return render(response, "main/create.html", {"form":form})
 
 
-#def home(response):
-    # return render(response, "main/home.html",  {})
+def view(response):
+     return render(response, "main/view.html",  {})
