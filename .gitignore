@@ -1,1 +1,32 @@
+# Byte-compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
 .venv
+.venv/
+env/
+venv/
+
+# Environment variables
+.env
+
+# Django-specific files
+db.sqlite3
+*.log
+
+# Static and media files (optional, if not using cloud storage)
+staticfiles/
+media/
+
+# IDE or Editor files
+.vscode/
+*.swp
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+*.bak
+.DS_Store
