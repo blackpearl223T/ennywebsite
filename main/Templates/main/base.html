@@ -44,19 +44,18 @@
         <a href="/create">Create</a>
         <a href="/view">View</a>
         <a href="/register">Register</a>
-
     </div>
-    <div id="content", name="content", class="main">
-        <div class = "row justify-content-center">
+
+    <div id="content" class="main">
+        <div class="row justify-content-center">
             <div class="col-8">
-                 <h1 class="mt-2">My site</h1>
-                 <hr class="mt-0 mb-4">
-                 {% if user.is_authenticated %}
-                    {% block content %}
-                    {% endblock %}
-                {% else %}
-                    <p>Login <a href="/login/">Here</a></p>
-                {% endif %}
+                <h1 class="mt-2">My site</h1>
+                <hr class="mt-0 mb-4">
+                {% block content %}
+                    {% if user.is_authenticated %}
+                        <h1>Welcome, {{ user.username }}!</h1>
+                    {% endif %}
+                {% endblock %}
             </div>
         </div>
     </div>
