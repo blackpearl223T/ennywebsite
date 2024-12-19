@@ -1,9 +1,25 @@
 {% extends "main/base.html" %}
+
 {% block title %}
- View 
+View Your To-Do Lists
 {% endblock %}
+
 {% block content %}
-    {% for td in user.todolist.all %}
-        <p><a href="/{{td.id}}">{{td.name}}</a></p>
-    {% endfor %}
+<div class="container mt-4">
+    <h2 class="text-center">📝 Your To-Do Lists</h2>
+    <hr class="mb-4">
+
+    {% if user.todolist.all %}
+        <ul class="list-group">
+            {% for td in user.todolist.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/{{ td.id }}" class="text-decoration-none">{{ td.name }}</a>
+                    <span class="badge bg-primary rounded-pill">#{{ td.id }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center text-muted">You have no to-do lists yet. Why not <a href="/create" class="text-decoration-none">create one</a>?</p>
+    {% endif %}
+</div>
 {% endblock %}

@@ -1,32 +1,29 @@
 {% extends 'main/base.html' %}
-{% block title %}View List{% endblock%}
+{% block title %}View List{% endblock %}
 
 {% block content %}
-    <h1>{{ls.name}}</h1>
+    <h1 class="mb-4">{{ ls.name }}</h1>
     <form method="post" action="#">
-    {% csrf_token %}
-    {% for item in ls.item_set.all %}
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <div class="input-group-text">
-                {% if item.complete == True %}
-                    <input type="checkbox", value="clicked", name="c{{item.id}}" checked>
-                {% else %}
-                    <input type="checkbox", value="clicked", name="c{{item.id}}">
-                {% endif %}
-            </div>
-        </div>
-        <input type ="text", value="{{item.text}}" class="form-control">
-    </div>
-    {% endfor %}
-
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <button type="submit", name="save",value="save", class="btn btn-success">Save</button>
+        {% csrf_token %}
         
+        {% for item in ls.item_set.all %}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input type="checkbox" value="clicked" name="c{{ item.id }}" {% if item.complete %}checked{% endif %}>
+                </div>
+            </div>
+            <input type="text" value="{{ item.text }}" class="form-control" readonly>
         </div>
-        <input type="text", name="new">
-    </div>
-    <button type="t", name="newItem",value="new Item", class="btn btn-success">Add Item</button>
-</form>
-{% endblock %} 
+        {% endfor %}
+
+        <!-- Section to Add New Items -->
+        <div class="input-group mb-3">
+            <input type="text" name="new" class="form-control" placeholder="Enter a new item...">
+            <button type="submit" name="newItem" value="newItem" class="btn btn-primary ms-2">Add Item</button>
+        </div>
+
+        <!-- Save Changes Button -->
+        <button type="submit" name="save" value="save" class="btn btn-success">Save Changes</button>
+    </form>
+{% endblock %}
