@@ -1,11 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .models import ToDoList, Item
-from .forms import CreateNewList
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from .models import ToDoList
+from .forms import CreateNewList
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -21,7 +20,7 @@ def index(response, id):
                     else:
                         item.complete = False
                     item.save()
-                
+
             elif response.POST.get("newItem"):
                 txt = response.POST.get("new")
 
@@ -56,10 +55,8 @@ def view(response):
     return render(response, "main/view.html",  {})
 
 def login_view(request):
-    print("Login view hit! ----1")  # Debug print
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
-        print("Form errors:", form.errors)  # Add this to see validation errors
         if form.is_valid():
             print("here")
             username = form.cleaned_data.get('username')
@@ -74,5 +71,12 @@ def login_view(request):
                 form.add_error(None, "Invalid username or password")  # Add error message
     else:
         form = AuthenticationForm()
-    
+
     return render(request, 'registration/login.html', {'form': form})
+
+def redirect_to_home(request):
+    return redirect('home')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
